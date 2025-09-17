@@ -98,22 +98,6 @@ sudo systemctl status webfm
 sudo journalctl -u webfm -f
 ```
 
-## 📱 Screenshots
-
-### Login Screen
-Beautiful login interface with gradient background and professional styling.
-
-### File Manager
-- Grid layout with file icons
-- Context menu for operations
-- Drag & drop upload area
-- Real-time system monitoring
-
-### Terminal
-- Full web-based terminal
-- Real-time command execution
-- Socket.io integration
-
 ## 🔧 Configuration
 
 ### User Management
