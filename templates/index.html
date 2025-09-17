@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web File Manager Pro</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fb;
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 100;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo {
+            background: rgba(255,255,255,0.2);
+            padding: 10px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .header-subtitle {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 2px;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .system-info {
+            display: flex;
+            gap: 15px;
+            font-size: 13px;
+            background: rgba(255,255,255,0.15);
+            padding: 8px 15px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.15);
+            padding: 8px 15px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+        
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        
+        .main-container {
+            display: flex;
+            height: calc(100vh - 80px);
+        }
+        
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-right: 1px solid #e8ecef;
+            padding: 25px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+        }
+        
+        .sidebar-section {
+            margin-bottom: 35px;
+        }
+        
+        .sidebar-section h3 {
+            margin-bottom: 18px;
+            color: #667eea;
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .sidebar-btn {
+            width: 100%;
+            padding: 15px 18px;
+            background: #f8f9fb;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-bottom: 12px;
+            text-align: left;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .sidebar-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .sidebar-btn.active {
+            background: #667eea;
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .sidebar-btn i {
+            width: 18px;
+            text-align: center;
+        }
+        
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #f8f9fb;
+        }
+        
+        .toolbar {
+            background: white;
+            padding: 20px 25px;
+            border-bottom: 1px solid #e8ecef;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .toolbar button {
+            padding: 10px 16px;
+            border: 1px solid #e8ecef;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+        
+        .toolbar button:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+        
+        .breadcrumb {
+            flex: 1;
+            margin-left: 25px;
+            font-size: 14px;
+            color: #666;
+            background: #f8f9fb;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .file-area {
+            flex: 1;
+            padding: 25px;
+            overflow: auto;
+        }
+        
+        .upload-area {
+            border: 2px dashed #d1d9e0;
+            border-radius: 15px;
+            padding: 50px;
+            text-align: center;
+            margin-bottom: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .upload-area:hover, .upload-area.dragover {
+            border-color: #667eea;
+            background: #f8f9ff;
+            transform: translateY(-2px);
+        }
+        
+        .upload-area i {
+            font-size: 48px;
+            color: #d1d9e0;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+        
+        .upload-area:hover i {
+            color: #667eea;
+        }
+        
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        
+        .file-item {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid #e8ecef;
+            position: relative;
+        }
+        
+        .file-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border-color: #667eea;
+        }
+        
+        .file-item.selected {
+            border-color: #667eea;
+            background: #f8f9ff;
+            transform: translateY(-5px);
+        }
+        
+        .file-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        .folder-icon {
+            color: #ffa502;
+        }
+        
+        .file-icon.file {
+            color: #667eea;
+        }
+        
+        .file-name {
+            font-weight: 600;
+            margin-bottom: 8px;
+            word-break: break-all;
+            color: #333;
+        }
+        
+        .file-info {
+            font-size: 12px;
+            color: #666;
+            background: #f8f9fb;
+            padding: 8px;
+            border-radius: 8px;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 30px;
+            width: 90%;
+            max-width: 700px;
+            border-radius: 15px;
+            position: relative;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+        }
+        
+        .modal h3 {
+            margin-bottom: 20px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+            transition: all 0.3s;
+        }
+        
+        .close:hover {
+            color: #667eea;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e8ecef;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-group textarea {
+            height: 400px;
+            font-family: 'Courier New', monospace;
+            resize: vertical;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .terminal-view {
+            padding: 25px;
+        }
+        
+        .terminal-container {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .terminal {
+            background: #1a1a1a;
+            color: #00ff41;
+            padding: 20px;
+            height: 450px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            border-radius: 10px;
+            border: 2px solid #333;
+        }
+        
+        .terminal-input {
+            background: #1a1a1a;
+            color: #00ff41;
+            border: 2px solid #333;
+            outline: none;
+            font-family: 'Courier New', monospace;
+            width: 100%;
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        
+        .context-menu {
+            display: none;
+            position: absolute;
+            background: white;
+            border: 1px solid #e8ecef;
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            z-index: 1000;
+            overflow: hidden;
+        }
+        
+        .context-menu-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+        
+        .context-menu-item:hover {
+            background: #f8f9fb;
+        }
+        
+        .context-menu-item.danger {
+            color: #e74c3c;
+        }
+        
+        .context-menu-item.danger:hover {
+            background: #fff5f5;
+        }
+        
+        .author-badge {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: absolute;
+                top: 0;
+                left: -100%;
+                height: 100%;
+                z-index: 999;
+                transition: left 0.3s;
+            }
+            
+            .sidebar.open {
+                left: 0;
+            }
+            
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .file-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+            }
+            
+            .system-info {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-left">
+            <div class="logo">
+                <i class="fas fa-folder-open"></i>
+            </div>
+            <div>
+                <h1>Web File Manager Pro</h1>
+                <div class="header-subtitle">by LONE FAISAL • v2.0</div>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="system-info">
+                <span id="cpu-usage"><i class="fas fa-microchip"></i> CPU: 0%</span>
+                <span id="memory-usage"><i class="fas fa-memory"></i> Memory: 0%</span>
+                <span id="disk-usage"><i class="fas fa-hdd"></i> Disk: 0%</span>
+            </div>
+            <div class="user-info">
+                <i class="fas fa-user"></i>
+                <span>{{ username }}</span>
+            </div>
+            <a href="/logout" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </div>
+    
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="sidebar-section">
+                <h3><i class="fas fa-compass"></i> Navigation</h3>
+                <button class="sidebar-btn active" onclick="switchView('files')">
+                    <i class="fas fa-folder"></i> File Manager
+                </button>
+                <button class="sidebar-btn" onclick="switchView('terminal')">
+                    <i class="fas fa-terminal"></i> Terminal
+                </button>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+                <button class="sidebar-btn" onclick="openModal('createFolder')">
+                    <i class="fas fa-folder-plus"></i> New Folder
+                </button>
+                <button class="sidebar-btn" onclick="openModal('uploadFile')">
+                    <i class="fas fa-cloud-upload-alt"></i> Upload Files
+                </button>
+                <button class="sidebar-btn" onclick="refreshFiles()">
+                    <i class="fas fa-sync-alt"></i> Refresh
+                </button>
+            </div>
+            
+            <div class="sidebar-section">
+                <h3><i class="fas fa-info-circle"></i> About</h3>
+                <button class="sidebar-btn" onclick="window.open('https://github.com/lonefaisal7/web-file-manager', '_blank')">
+                    <i class="fab fa-github"></i> View on GitHub
+                </button>
+                <button class="sidebar-btn" onclick="window.open('https://t.me/lonefaisal', '_blank')">
+                    <i class="fab fa-telegram"></i> Contact Author
+                </button>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div id="files-view">
+                <div class="toolbar">
+                    <button onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button onclick="goHome()"><i class="fas fa-home"></i> Home</button>
+                    <button onclick="refreshFiles()"><i class="fas fa-sync-alt"></i> Refresh</button>
+                    <div class="breadcrumb" id="breadcrumb">/</div>
+                </div>
+                
+                <div class="file-area">
+                    <div class="upload-area" id="upload-area">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <h3>Drop files here or click to upload</h3>
+                        <p>Supports multiple files • Max 500MB per file</p>
+                        <input type="file" id="file-input" style="display: none;" multiple>
+                    </div>
+                    
+                    <div class="file-grid" id="file-grid">
+                        <!-- Files will be loaded here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div id="terminal-view" style="display: none;">
+                <div class="terminal-view">
+                    <div class="terminal-container">
+                        <h3><i class="fas fa-terminal"></i> Web Terminal</h3>
+                        <div class="terminal" id="terminal-output"></div>
+                        <input type="text" class="terminal-input" id="terminal-input" placeholder="Enter command and press Enter...">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Context Menu -->
+    <div class="context-menu" id="context-menu">
+        <div class="context-menu-item" onclick="downloadFile()">
+            <i class="fas fa-download"></i> Download
+        </div>
+        <div class="context-menu-item" onclick="openModal('renameFile')">
+            <i class="fas fa-edit"></i> Rename
+        </div>
+        <div class="context-menu-item" onclick="editFile()">
+            <i class="fas fa-code"></i> Edit
+        </div>
+        <div class="context-menu-item danger" onclick="deleteFile()">
+            <i class="fas fa-trash"></i> Delete
+        </div>
+    </div>
+    
+    <!-- Modals -->
+    <div class="modal" id="createFolderModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3><i class="fas fa-folder-plus"></i> Create New Folder</h3>
+            <div class="form-group">
+                <label>Folder Name:</label>
+                <input type="text" id="folderName" placeholder="Enter folder name">
+            </div>
+            <button class="btn-primary" onclick="createFolder()">
+                <i class="fas fa-plus"></i> Create Folder
+            </button>
+        </div>
+    </div>
+    
+    <div class="modal" id="uploadFileModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3><i class="fas fa-cloud-upload-alt"></i> Upload Files</h3>
+            <input type="file" id="upload-input" multiple>
+            <br><br>
+            <button class="btn-primary" onclick="uploadFiles()">
+                <i class="fas fa-upload"></i> Upload Files
+            </button>
+        </div>
+    </div>
+    
+    <div class="modal" id="renameFileModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3><i class="fas fa-edit"></i> Rename Item</h3>
+            <div class="form-group">
+                <label>New Name:</label>
+                <input type="text" id="newName" placeholder="Enter new name">
+            </div>
+            <button class="btn-primary" onclick="renameFile()">
+                <i class="fas fa-save"></i> Save Changes
+            </button>
+        </div>
+    </div>
+    
+    <div class="modal" id="editFileModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3><i class="fas fa-code"></i> Edit File</h3>
+            <div class="form-group">
+                <textarea id="fileContent" placeholder="File content..."></textarea>
+            </div>
+            <button class="btn-primary" onclick="saveFile()">
+                <i class="fas fa-save"></i> Save File
+            </button>
+        </div>
+    </div>
+
+    <div class="author-badge">
+        <i class="fas fa-code"></i>
+        Made by LONE FAISAL
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
