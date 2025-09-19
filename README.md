@@ -24,7 +24,7 @@
 
 ---
 
-### 🌟 Official Networks
+### 🌟 Official Telegram Channels 🌟
 
 [![ARROW NETWORK](https://img.shields.io/badge/ARROW_NETWORK-t.me/arrow_network-red?logo=telegram&style=flat-square)](https://t.me/arrow_network)
 [![KMRI NETWORK](https://img.shields.io/badge/KMRI_NETWORK-t.me/kmri_network_reborn-green?logo=telegram&style=flat-square)](https://t.me/kmri_network_reborn)
