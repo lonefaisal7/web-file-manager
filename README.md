@@ -1,44 +1,59 @@
 # 🚀 Web File Manager Pro
 
 <div align="center">
+  
+[![Telegram](https://img.shields.io/badge/Telegram-@lonefaisal-blue?style=for-the-badge&logo=telegram)](https://t.me/lonefaisal)
 
-![Web File Manager](https://img.shields.io/badge/Web%20File%20Manager-Pro-blue?style=for-the-badge&logo=files)
-![Version](https://img.shields.io/badge/Version-2.0-green?style=for-the-badge)
-![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
+![Web File Manager Pro](https://via.placeholder.com/800x400/1a1a1a/00ff88?text=Web+File+Manager+Pro)
 
 **Complete web-based file management with terminal access**
 
-*Created by [LONE FAISAL](https://github.com/lonefaisal7)*
+✨ **Created by LONE FAISAL** ✨
 
-[![Telegram](https://img.shields.io/badge/Telegram-@lonefaisal-blue?style=for-the-badge&logo=telegram)](https://t.me/lonefaisal)
-[![GitHub](https://img.shields.io/badge/GitHub-lonefaisal7-black?style=for-the-badge&logo=github)](https://github.com/lonefaisal7)
+---
+
+### 🌐 Powered By
+
+<div align="center">
+  
+[![ARROW NETWORK](https://img.shields.io/badge/📡_ARROW_NETWORK-Join_Channel-red?style=for-the-badge&logo=telegram)](https://t.me/arrow_network)
+[![KMRI NETWORK](https://img.shields.io/badge/🔗_KMRI_NETWORK-Join_Channel-green?style=for-the-badge&logo=telegram)](https://t.me/kmri_network_reborn)
+
+</div>
+
+---
 
 </div>
 
 ## ✨ Features
 
-### 🎯 **Core Features**
-- **Complete File Management** - Create, delete, rename, upload, download files and folders
-- **Web Terminal** - Full command-line access through web interface
-- **Beautiful UI** - Modern, responsive design with drag & drop support
-- **Real-time Monitoring** - Live CPU, Memory, and Disk usage
-- **Secure Authentication** - Password-protected access with session management
-- **Auto-start Service** - Systemd integration for VPS deployment
+### 🎯 Core Features
 
-### 🛡️ **Security Features**
-- Password hashing with Werkzeug
-- Session-based authentication
-- Secure file operations
-- Input validation and sanitization
-- CSRF protection
+🗂️ **Complete File Management** - Create, delete, rename, upload, download files and folders  
+💻 **Web Terminal** - Full command-line access through web interface  
+🎨 **Beautiful UI** - Modern, responsive design with drag & drop support  
+📊 **Real-time Monitoring** - Live CPU, Memory, and Disk usage  
+🔐 **Secure Authentication** - Password-protected access with session management  
+⚡ **Auto-start Service** - Systemd integration for VPS deployment
 
-### 🎨 **UI/UX Features**
-- Professional gradient themes
-- Context menu for file operations
-- Modal dialogs for all operations
-- Drag & drop file uploads
-- Real-time system information
-- Mobile-responsive design
+### 🛡️ Security Features
+
+🔒 Password hashing with Werkzeug  
+🎫 Session-based authentication  
+🔧 Secure file operations  
+✅ Input validation and sanitization  
+🛡️ CSRF protection
+
+### 🎨 UI/UX Features
+
+🌈 Professional gradient themes  
+📋 Context menu for file operations  
+📝 Modal dialogs for all operations  
+📎 Drag & drop file uploads  
+📈 Real-time system information  
+📱 Mobile-responsive design
+
+---
 
 ## 🚀 One-Line Installation
 
@@ -46,19 +61,24 @@
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/lonefaisal7/web-file-manager/main/install.sh)"
 ```
 
-### Custom Installation with Username/Password
+### 🔧 Custom Installation with Username/Password
+
 ```bash
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/lonefaisal7/web-file-manager/main/install.sh)" -- -u yourusername -p yourpassword
 ```
 
+---
+
 ## 📋 Manual Installation
 
-### Prerequisites
-- Ubuntu/Debian VPS
-- Python 3.8+
-- Root access
+### 📦 Prerequisites
 
-### Step by Step
+- 🐧 Ubuntu/Debian VPS
+- 🐍 Python 3.8+
+- 👑 Root access
+
+### 🔨 Step by Step
+
 ```bash
 # 1. Clone the repository
 git clone https://github.com/lonefaisal7/web-file-manager.git
@@ -69,15 +89,20 @@ sudo chmod +x install.sh
 sudo ./install.sh
 ```
 
+---
+
 ## 🌐 Access Your File Manager
 
 After installation, access your Web File Manager at:
-- **Local:** `http://localhost:8000`
-- **VPS:** `http://YOUR_VPS_IP:8000`
 
-**Default Credentials:**
-- Username: `admin`
-- Password: `admin123`
+🏠 **Local:** `http://localhost:8000`  
+🌍 **VPS:** `http://YOUR_VPS_IP:8000`
+
+### 🔑 Default Credentials:
+- 👤 **Username:** `admin`
+- 🔐 **Password:** `admin123`
+
+---
 
 ## 🎮 Service Management
 
@@ -98,10 +123,14 @@ sudo systemctl status webfm
 sudo journalctl -u webfm -f
 ```
 
+---
+
 ## 🔧 Configuration
 
-### User Management
+### 👥 User Management
+
 Edit `/opt/webfm/config/users.json` to add/modify users:
+
 ```json
 {
   "1": {
@@ -115,44 +144,53 @@ Edit `/opt/webfm/config/users.json` to add/modify users:
 }
 ```
 
-### Port Configuration
+### 🌐 Port Configuration
+
 Modify `/etc/systemd/system/webfm.service` to change port:
+
 ```ini
 Environment=PORT=8000
 ```
 
+---
+
 ## 🔒 Security Considerations
 
-⚠️ **Important Security Notes:**
-- This tool provides full system access through web interface
-- Only use on trusted networks or with proper firewall rules
-- Change default credentials immediately after installation
-- Consider using HTTPS in production environments
-- Implement proper network security measures
+### ⚠️ Important Security Notes:
+
+🚨 This tool provides full system access through web interface  
+🌐 Only use on trusted networks or with proper firewall rules  
+🔑 Change default credentials immediately after installation  
+🔐 Consider using HTTPS in production environments  
+🛡️ Implement proper network security measures
+
+---
 
 ## 🛠️ Development
 
-### Project Structure
+### 📁 Project Structure
+
 ```
 web-file-manager/
-├── app.py                 # Main Flask application
-├── install.sh            # One-line installer
-├── requirements.txt      # Python dependencies
-├── systemd/
-│   └── webfm.service    # Systemd service file
-├── templates/
-│   ├── index.html       # Main UI template
-│   └── login.html       # Login page template
-├── static/
-│   ├── css/
-│   ├── js/
-│   │   └── app.js       # Frontend JavaScript
-│   └── img/
-└── config/
-    └── users.json       # User credentials
+├── 🐍 app.py                 # Main Flask application
+├── ⚙️ install.sh            # One-line installer
+├── 📋 requirements.txt      # Python dependencies
+├── 📁 systemd/
+│   └── 🔧 webfm.service    # Systemd service file
+├── 📁 templates/
+│   ├── 🌐 index.html       # Main UI template
+│   └── 🔐 login.html       # Login page template
+├── 📁 static/
+│   ├── 🎨 css/
+│   ├── ⚡ js/
+│   │   └── 📜 app.js       # Frontend JavaScript
+│   └── 🖼️ img/
+└── 📁 config/
+    └── 👥 users.json       # User credentials
 ```
 
-### Local Development
+### 💻 Local Development
+
 ```bash
 # Create virtual environment
 python3 -m venv venv
@@ -165,27 +203,35 @@ pip install -r requirements.txt
 python app.py
 ```
 
+---
+
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+1. 🍴 Fork the repository
+2. 🌿 Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. 💾 Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. 📤 Push to the branch (`git push origin feature/AmazingFeature`)
+5. 🔄 Open a Pull Request
+
+---
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+---
 
 ## 🆘 Support
 
 If you encounter any issues or need help:
 
-1. Check the [Issues](https://github.com/lonefaisal7/web-file-manager/issues) page
-2. Contact me on Telegram: [@lonefaisal](https://t.me/lonefaisal)
-3. Create a new issue with detailed information
+1. 📋 Check the [Issues](../../issues) page
+2. 💬 Contact me on Telegram: [@lonefaisal](https://t.me/lonefaisal)
+3. 🐛 Create a new issue with detailed information
+
+---
 
 ## 🌟 Show Your Support
 
@@ -195,9 +241,19 @@ If this project helped you, please give it a ⭐ on GitHub!
 
 <div align="center">
 
-**Made with ❤️ by [LONE FAISAL](https://github.com/lonefaisal7)**
+### 📞 Connect With Me
 
-[![Telegram](https://img.shields.io/badge/Contact-@lonefaisal-blue?style=social&logo=telegram)](https://t.me/lonefaisal)
-[![GitHub](https://img.shields.io/badge/Follow-lonefaisal7-black?style=social&logo=github)](https://github.com/lonefaisal7)
+[![Telegram](https://img.shields.io/badge/📱_Telegram-@lonefaisal-blue?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/lonefaisal)
+
+### 🌐 Our Networks
+
+[![ARROW NETWORK](https://img.shields.io/badge/📡_ARROW_NETWORK-Join_Now-ff4444?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/arrow_network)
+[![KMRI NETWORK](https://img.shields.io/badge/🔗_KMRI_NETWORK-Join_Now-00aa00?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/kmri_network_reborn)
+
+---
+
+**Made with ❤️ by LONE FAISAL**
+
+[![GitHub](https://img.shields.io/badge/GitHub-lonefaisal7-333?style=for-the-badge&logo=github)](https://github.com/lonefaisal7)
 
 </div>
