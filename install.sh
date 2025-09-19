@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# ╔══════════════════════════════════════════════════════════════╗
+# ╔═════════════════════════════════════════════════════════════╗
 # ║                    WEB FILE MANAGER PRO                     ║
 # ║                   by LONE FAISAL                            ║
 # ║              https://github.com/lonefaisal7                 ║
 # ║                 Telegram: @lonefaisal                       ║
-# ║                                                              ║
+# ║                                                             ║
 # ║  Complete web-based file management with terminal access    ║
-# ╚══════════════════════════════════════════════════════════════╝
+# ╚═════════════════════════════════════════════════════════════╝
 
 # Colors for output
 RED='\033[0;31m'
@@ -60,14 +60,14 @@ print_color() {
 print_banner() {
     clear
     print_color $CYAN "
-╔══════════════════════════════════════════════════════════════╗
+╔═════════════════════════════════════════════════════════════╗
 ║                    WEB FILE MANAGER PRO                     ║
 ║                   by LONE FAISAL                            ║
 ║              https://github.com/lonefaisal7                 ║
 ║                 Telegram: @lonefaisal                       ║
-║                                                              ║
+║                                                             ║
 ║  Complete web-based file management with terminal access    ║
-╚══════════════════════════════════════════════════════════════╝
+╚═════════════════════════════════════════════════════════════╝
     "
 }
 
